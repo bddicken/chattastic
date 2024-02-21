@@ -1,0 +1,1 @@
+On my computer, loads about 100k messages per second. 1 billion should load in under 3 hours!
