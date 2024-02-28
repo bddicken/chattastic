@@ -67,7 +67,7 @@ while len(chatrooms) < COUNT / 1000:
     chatrooms.append(fake.word())
 
 def message_inserts():
-    ib = InsertBuilder('message', ['id', 'room', 'alias', 'text', 'created_at'])
+    ib = InsertBuilder('message', ['room', 'alias', 'text', 'created_at'])
     cid = 0
     for room in chatrooms:
         for i in range(1000):
@@ -78,10 +78,10 @@ def message_inserts():
             message = random.choice(messages)
             while "'" in message:
                 message = s.sentence()
-            ib.add_row([cid, room, alias, message, time])
-        if cid % 10000 == 0:
+            ib.add_row([room, alias, message, time])
+        if cid % 1000 == 0:
             ib.dump()
 
-print('USE chat;')
 message_inserts()
 print('done with messages', file=sys.stderr)
+

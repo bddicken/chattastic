@@ -1,0 +1,11 @@
+{
+  "name": "superchat-server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@planetscale/database": "^1.16.0",
+    "dotenv": "latest",
+    "express": "^4.18.2",
+    "mysql2": "latest"
+  }
+}
