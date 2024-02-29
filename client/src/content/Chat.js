@@ -10,6 +10,26 @@ const Chat = (props) => {
   
   const id = useId();
   const [message, setMessage] = useState(props?.value ?? '');
+  const [messages, setMessages] = useState(props?.value ?? '');
+
+  const getMessages = () => {
+    const p = fetch('http://127.0.0.1:3100/messages/mysql',
+        {headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }});
+    const p2 = p.then( (response) => { 
+      console.log(response);
+      return response.json();
+    });
+    p2.then( (data) => {
+      console.log('hiiiiiiiiiii');
+      console.log(JSON.stringify(data));
+      setMessages(data);
+    });
+  };
+
+getMessages();
 
   return (
     <>
@@ -27,6 +47,7 @@ const Chat = (props) => {
       <div id="mainchat"
         class="text-xl py-2 pl-2 p-2 text-slate-500 rounded-md opacity-10 fixed bg-slate-200 top-14 right-5 left-5 bottom-20"
       >
+       {messages.length}
       </div>
       <div id="sendmessage" class="fixed bottom-2 right-2 left-2">
         <input 

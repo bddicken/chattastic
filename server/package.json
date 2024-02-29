@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@planetscale/database": "^1.16.0",
+    "cors": "^2.8.5",
     "dotenv": "latest",
     "express": "^4.18.2",
     "mysql2": "latest"
