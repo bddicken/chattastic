@@ -32,7 +32,7 @@ app.get('/messages/:room/:id', (req, res) => {
 });
 
 /* Send a message to the DB */
-app.get('/send/:alias/:room/:text', (req, res) => { 
+app.get('/send/:room/:alias/:text', (req, res) => { 
   const {alias, room, text} = req.params;
   connection.query('INSERT INTO message (alias, room, text) VALUES (?, ?, ?)', [alias, room, text], (err, results) => {
     if (err) res.json({'status':'fail'});
