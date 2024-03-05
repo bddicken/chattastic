@@ -2,6 +2,7 @@ import React from 'react';
 import Popup from 'reactjs-popup';
 import { useId, useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
+import ScaleLoader from "react-spinners/ScaleLoader";
 import './CustomPopup.css';
 
 function CustomPopup (props) {
@@ -38,16 +39,23 @@ return (
         </button>
         <div className="text-4xl mt-5 mb-5"> Search Results </div>
         <div className="text-xl">
-        { results.map((item, index) => {
-           return <div className="ml-0 mr-2 mb-5 pl-4 pr-4 p-2 bg-gray-500 rounded-md bg-opacity-50 w-fit drop-shadow-md">
-            <Link 
-              key={index} 
-              to={`/${item.room}`}
-              state={{"subject":item.room}}>
-                 <span className="text-orange-500">{item.room}</span>
-            </Link>
-           </div>
-          })
+        
+
+
+        { (results.length == 1 && results[0].id == -1) ? 
+          <div className="h-screen flex items-center justify-center">
+            <ScaleLoader height="100" width="10" margin="10"></ScaleLoader> 
+          </div> :
+          results.map((item, index) => {
+             return <div className="ml-0 mr-2 mb-5 pl-4 pr-4 p-2 bg-gray-500 rounded-md bg-opacity-50 w-fit drop-shadow-md">
+              <Link 
+                key={index} 
+                to={`/${item.room}`}
+                state={{"subject":item.room}}>
+                   <span className="text-orange-500">{item.room}</span>
+              </Link>
+             </div>
+            })
         }
 
         </div>

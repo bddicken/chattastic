@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useId, useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import useInterval from './useInterval';
+import ScaleLoader from "react-spinners/ScaleLoader";
 import './Chat.css';
 
 const Chat = (props) => {
@@ -12,7 +13,7 @@ const Chat = (props) => {
   const id = useId();
   const [alias, setAlias] = useState(props?.value ?? '');
   const [message, setMessage] = useState(props?.value ?? '');
-  const [messages, setMessages] = useState([{alias:'', messages:'Nothing here!', id:0}]);
+  const [messages, setMessages] = useState([{alias:'', messages:'Nothing here!', id:-1}]);
 
   const getMessages = () => {
     /* Code this in video */
@@ -72,7 +73,9 @@ const Chat = (props) => {
     <>
       <div id="pagetitle" className="fixed top-2 right-2">
         <span className="font-semibold text-2xl fixed top-2 left-5">
-          Chattastic
+          <Link to="/" >
+            Chattastic
+          </Link>
           <span className="font-thin text-2xl">
             {pathname}
           </span>
@@ -80,12 +83,16 @@ const Chat = (props) => {
       </div>
 
       <div id="mainchat" className="text-xl py-2 pl-2 p-2 text-slate-900 rounded-md bg-opacity-10 fixed bg-slate-200 top-16 right-5 left-5 bottom-16 overflow-auto drop-shadow-lg">
-        { messages.map((item, index) => {
-           return <div key={index} className="m-2 pl-4 pr-4 p-2 bg-gray-800 rounded-md bg-opacity-50 w-fit drop-shadow-md">
-               <span className="text-orange-500">{item.alias}</span> &nbsp; &nbsp;
-               <span className="text-gray-400">{item.text}</span>
-           </div>
-          })
+        { (messages.length == 1 && messages[0].id == -1) ? 
+          <div className="h-screen flex items-center justify-center">
+            <ScaleLoader height="100" width="10" margin="10"></ScaleLoader> 
+          </div> :
+          messages.map((item, index) => {
+             return <div key={index} className="m-2 pl-4 pr-4 p-2 bg-gray-800 rounded-md bg-opacity-50 w-fit drop-shadow-md">
+                 <span className="text-orange-500">{item.alias}</span> &nbsp; &nbsp;
+                 <span className="text-gray-400">{item.text}</span>
+             </div>
+            })
         }
         <div ref={messagesEndRef} />
       </div>
