@@ -56,7 +56,7 @@ def valueify(values):
 
 messages = []
 for i in range(2000):
-    messages.append(fake.sentence(nb_words=10, variable_nb_words=True))
+    messages.append(fake.sentence(nb_words=20, variable_nb_words=True))
 
 usernames = []
 for i in range(2000):
@@ -75,7 +75,7 @@ def message_inserts():
             t = fake.date_time_between(start_date='-1y', end_date='now')
             time = t.strftime('%Y-%m-%d %H:%M:%S')
             alias = random.choice(usernames)
-            message = random.choice(messages)
+            message = fake.sentence(nb_words=8, variable_nb_words=True)
             while "'" in message:
                 message = s.sentence()
             ib.add_row([room, alias, message, time])

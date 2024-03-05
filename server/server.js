@@ -11,11 +11,18 @@ const port = process.env.PORT || 3100
 
 const connection = mysql.createConnection(process.env.DATABASE_URL)
 
-connection.query('show tables', function (err, results, fields) {
-  console.log(results) // results contains rows returned by server
-  console.log(fields) // fields contains extra metadata about results, if available
-})
+/* Code these three routes in the video */
 
+/* Get rooms for search */
+app.get('/search/:term', (req, res) => { 
+  const {term} = req.params;
+  connection.query('SELECT DISTINCT room FROM message WHERE MATCH(text) AGAINST(?) LIMIT 5', [term], (err, results) => {
+    console.log(results);
+    res.json(results);
+  });
+});
+
+/* Get all messages for a given chat topic */
 app.get('/messages/:room', (req, res) => { 
   const {room} = req.params;
   connection.query('SELECT * FROM message WHERE room = ?', [room], (err, results) => {

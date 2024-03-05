@@ -13,11 +13,11 @@ CREATE TABLE IF NOT EXISTS message (
   PRIMARY KEY(id)
 );
 
-
+/*
 INSERT INTO message (id, alias, room, text) VALUES 
   (1, 'ben', 'mysql', 'test message'),
   (2, 'taylor', 'mysql', 'another message'),
   (3, 'brian', 'mysql', 'woohooo'),
   (4, 'holly', 'mysql', 'hi there');
-
+*/
 

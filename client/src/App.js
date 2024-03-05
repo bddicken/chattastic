@@ -3,7 +3,6 @@ import { useId, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Home from './content/Home';
 import Chat from './content/Chat';
-import NoMatch from './content/NoMatch';
 import './App.css';
 
 const App = (props) => {

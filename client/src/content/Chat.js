@@ -15,12 +15,14 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([{alias:'', messages:'Nothing here!', id:0}]);
 
   const getMessages = () => {
+    /* Code this in video */
     fetch('http://127.0.0.1:3100/messages' + pathname)
       .then( (response) => { return response.json(); })
       .then( (data) => { setMessages(messages => data); });
   };
   
   const getRecentMessages = () => {
+    /* Code this in video */
     if (!messages.length) return;
     fetch('http://127.0.0.1:3100/messages' + pathname + '/' + messages[messages.length-1].id)
       .then( (response) => { return response.json(); })
@@ -34,18 +36,20 @@ const Chat = (props) => {
   };
   
   const sendMessage = () => {
+    /* Code this in video */
     fetch('http://127.0.0.1:3100/send' + pathname + '/' + alias + '/' + message,
-        {
-          method: "GET",
-          headers: { 'Content-Type': 'application/json' }
-        })
-      .then( (response) => { return response.json(); })
+        { method: "GET", headers: { 'Content-Type': 'application/json' } })
+     .then( (response) => { return response.json(); })
      .then((data) => {
-       getRecentMessages();
+       if (messages.length)
+         getRecentMessages();
+       else
+         getMessages();
+       setMessage('');
      });
   };
 
-   const scrollToBottom = () => {
+  const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView()
   }
 
@@ -66,55 +70,41 @@ const Chat = (props) => {
 
   return (
     <>
-      <div id="pagetitle"
-        class="fixed top-2 right-2"
-      >
-        <span class="font-semibold text-2xl">
+      <div id="pagetitle" className="fixed top-2 right-2">
+        <span className="font-semibold text-2xl fixed top-2 left-5">
           Chattastic
-        </span>
-        <span class="font-thin text-2xl">
-          {pathname}
+          <span className="font-thin text-2xl">
+            {pathname}
+          </span>
         </span>
       </div>
 
-      <div id="mainchat"
-        class="text-xl py-2 pl-2 p-2 text-slate-900 rounded-md bg-opacity-10 fixed bg-slate-200 top-20 right-5 left-5 bottom-20 overflow-auto drop-shadow-lg"
-      >
-        { messages.map((item) => {
-           return <div class="m-2 p-2 bg-gray-800 rounded-md bg-opacity-50 w-fit drop-shadow-md">
-               <span class="text-orange-500">{item.alias}</span> &nbsp; &nbsp;
-               <span class="text-gray-400">{item.text}</span>
+      <div id="mainchat" className="text-xl py-2 pl-2 p-2 text-slate-900 rounded-md bg-opacity-10 fixed bg-slate-200 top-16 right-5 left-5 bottom-16 overflow-auto drop-shadow-lg">
+        { messages.map((item, index) => {
+           return <div key={index} className="m-2 pl-4 pr-4 p-2 bg-gray-800 rounded-md bg-opacity-50 w-fit drop-shadow-md">
+               <span className="text-orange-500">{item.alias}</span> &nbsp; &nbsp;
+               <span className="text-gray-400">{item.text}</span>
            </div>
           })
         }
         <div ref={messagesEndRef} />
       </div>
-      <div id="sendmessage" class="fixed bottom-2 right-2 left-2">
+      <div id="sendmessage" className="fixed bottom-2 right-2 left-5">
         <input 
-          id='alias'
-          class="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-1/4 text-xl leading-6 m-5 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-2 ml-2 mr-5 ring-1 ring-slate-200 shadow-sm opacity-25" 
-          type="text"
-          placeholder="Alias"
-          value={alias}
-          onInput={e => setAlias(e.target.value)} 
-          />
+          value={alias} id="alias" type="text" placeholder="Alias"
+          className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-1/4 text-xl leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-2 ml-0 mr-5 ring-1 ring-slate-200 shadow-sm opacity-25" 
+          onInput={e => setAlias(e.target.value)} />
         <input 
-          id={id}
-          class="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-2/4 text-xl leading-6 m-5 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-2 ml-0 ring-1 ring-slate-200 shadow-sm opacity-25" 
-          type="text"
-          placeholder="Chat here"
-          value={message}
+          id={id} value={message} type="text" placeholder="Chat here"
+          className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-2/4 text-xl leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-2 ml-0 ring-1 ring-slate-200 shadow-sm opacity-25" 
           onInput={e => setMessage(e.target.value)} 
           onKeyPress = { (event) => {
-                if (event.key === 'Enter') {
-                  sendMessage()
-                }
-              }}
-          />
-             
-        <button 
-          class="text-xl bg-gray-900 hover:bg-gray-800 text-white font-light py-2 pl-2 p-2 opacity-75 rounded-md w-1/8" >
-        Send
+            if (event.key === 'Enter') {
+              sendMessage()
+            }
+          }} />
+        <button onClick = { sendMessage } className="text-xl bg-gray-900 hover:bg-gray-800 text-white font-light py-2 pl-2 p-2 opacity-75 rounded-md w-1/8">
+          Send
         </button>
       </div>
     </>
