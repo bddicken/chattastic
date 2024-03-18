@@ -5,6 +5,7 @@ Stay tuned for more!
 '''
 
 import sys
+import time
 import random
 import string
 #import names
@@ -75,12 +76,13 @@ def message_inserts():
             t = fake.date_time_between(start_date='-1y', end_date='now')
             time = t.strftime('%Y-%m-%d %H:%M:%S')
             alias = random.choice(usernames)
-            message = fake.sentence(nb_words=8, variable_nb_words=True)
+            message = fake.sentence(nb_words=10, variable_nb_words=True)
             while "'" in message:
                 message = s.sentence()
             ib.add_row([room, alias, message, time])
         if cid % 1000 == 0:
             ib.dump()
+            #time.sleep(0.5)
 
 message_inserts()
 print('done with messages', file=sys.stderr)

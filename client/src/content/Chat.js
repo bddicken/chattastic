@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useId, useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import useInterval from './useInterval';
-import ScaleLoader from "react-spinners/ScaleLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 import './Chat.css';
 
 const Chat = (props) => {
@@ -13,7 +13,7 @@ const Chat = (props) => {
   const id = useId();
   const [alias, setAlias] = useState(props?.value ?? '');
   const [message, setMessage] = useState(props?.value ?? '');
-  const [messages, setMessages] = useState([{alias:'', messages:'Nothing here!', id:-1}]);
+  const [messages, setMessages] = useState([{alias:'', messages:'Nothing here!', FTS_DOC_ID:-1}]);
 
   const getMessages = () => {
     /* Code this in video */
@@ -25,7 +25,8 @@ const Chat = (props) => {
   const getRecentMessages = () => {
     /* Code this in video */
     if (!messages.length) return;
-    fetch('http://127.0.0.1:3100/messages' + pathname + '/' + messages[messages.length-1].id)
+   if (messages.length > 0 && messages[0].FTS_DOC_ID == -1) return;
+    fetch('http://127.0.0.1:3100/messages' + pathname + '/' + messages[messages.length-1].FTS_DOC_ID)
       .then( (response) => { return response.json(); })
       .then( (data) => {
         if (data.length) {
@@ -83,12 +84,12 @@ const Chat = (props) => {
       </div>
 
       <div id="mainchat" className="text-xl py-2 pl-2 p-2 text-slate-900 rounded-md bg-opacity-10 fixed bg-slate-200 top-16 right-5 left-5 bottom-16 overflow-auto drop-shadow-lg">
-        { (messages.length == 1 && messages[0].id == -1) ? 
+        { (messages.length == 1 && messages[0].FTS_DOC_ID == -1) ? 
           <div className="h-screen flex items-center justify-center">
-            <ScaleLoader height="100" width="10" margin="10"></ScaleLoader> 
+            <BounceLoader height="100" width="10" margin="10"></BounceLoader> 
           </div> :
           messages.map((item, index) => {
-             return <div key={index} className="m-2 pl-4 pr-4 p-2 bg-gray-800 rounded-md bg-opacity-50 w-fit drop-shadow-md">
+             return <div key={item.FTS_DOC_ID} className="m-2 pl-4 pr-4 p-2 bg-gray-800 rounded-md bg-opacity-50 w-fit drop-shadow-md">
                  <span className="text-orange-500">{item.alias}</span> &nbsp; &nbsp;
                  <span className="text-gray-400">{item.text}</span>
              </div>

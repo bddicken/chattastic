@@ -9,15 +9,56 @@ app.set('json spaces', 2)
 
 const port = process.env.PORT || 3100
 
-const connection = mysql.createConnection(process.env.DATABASE_URL)
-
-/* Code these three routes in the video */
+//const connection = mysql.createConnection(process.env.DATABASE_URL)
+const connection = mysql.createConnection({
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
+  timezone: 'mst'
+});
 
 /* Get rooms for search */
 app.get('/search/:term', (req, res) => { 
   const {term} = req.params;
   connection.query('SELECT DISTINCT room FROM message WHERE MATCH(text) AGAINST(?) LIMIT 5', [term], (err, results) => {
-    console.log(results);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//connection.query('SELECT DISTINCT room FROM message WHERE MATCH(text) AGAINST(?) LIMIT 5', [term], (err, results) => {
     res.json(results);
   });
 });
@@ -25,7 +66,7 @@ app.get('/search/:term', (req, res) => {
 /* Get all messages for a given chat topic */
 app.get('/messages/:room', (req, res) => { 
   const {room} = req.params;
-  connection.query('SELECT * FROM message WHERE room = ?', [room], (err, results) => {
+  connection.query('SELECT * FROM (SELECT * FROM message WHERE room = ? ORDER BY created_at DESC LIMIT 200) AS x ORDER BY created_at ASC', [room], (err, results) => {
     res.json(results);
   });
 });
@@ -33,7 +74,7 @@ app.get('/messages/:room', (req, res) => {
 /* For getting *recent* messages */
 app.get('/messages/:room/:id', (req, res) => { 
   const {room, id} = req.params;
-  connection.query('SELECT * FROM message WHERE room = ? AND id > ?', [room, id], (err, results) => {
+  connection.query('SELECT * FROM message WHERE room = ? AND FTS_DOC_ID > ?', [room, id], (err, results) => {
     res.json(results);
   });
 });
@@ -42,14 +83,14 @@ app.get('/messages/:room/:id', (req, res) => {
 app.get('/send/:room/:alias/:text', (req, res) => { 
   const {alias, room, text} = req.params;
   connection.query('INSERT INTO message (alias, room, text) VALUES (?, ?, ?)', [alias, room, text], (err, results) => {
+    console.log('insert!');
     if (err) res.json({'status':'fail'});
     else res.json({'status':'success'});
   });
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Go to http://localhost:${port}`)
 })
 
 //connection.end()
-
