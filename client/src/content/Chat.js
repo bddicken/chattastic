@@ -17,7 +17,7 @@ const Chat = (props) => {
 
   const getMessages = () => {
     /* Code this in video */
-    fetch('http://127.0.0.1:3100/messages' + pathname)
+    fetch('http://64.23.183.31:3100/messages' + pathname)
       .then( (response) => { return response.json(); })
       .then( (data) => { setMessages(messages => data); });
   };
@@ -26,7 +26,7 @@ const Chat = (props) => {
     /* Code this in video */
     if (!messages.length) return;
    if (messages.length > 0 && messages[0].FTS_DOC_ID == -1) return;
-    fetch('http://127.0.0.1:3100/messages' + pathname + '/' + messages[messages.length-1].FTS_DOC_ID)
+    fetch('http://64.23.183.31:3100/messages' + pathname + '/' + messages[messages.length-1].FTS_DOC_ID)
       .then( (response) => { return response.json(); })
       .then( (data) => {
         if (data.length) {
@@ -39,7 +39,7 @@ const Chat = (props) => {
   
   const sendMessage = () => {
     /* Code this in video */
-    fetch('http://127.0.0.1:3100/send' + pathname + '/' + alias + '/' + message,
+    fetch('http://64.23.183.31:3100/send' + pathname + '/' + alias + '/' + message,
         { method: "GET", headers: { 'Content-Type': 'application/json' } })
      .then( (response) => { return response.json(); })
      .then((data) => {

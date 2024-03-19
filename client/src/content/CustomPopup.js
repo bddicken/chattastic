@@ -12,7 +12,7 @@ function CustomPopup (props) {
 
   const getResults = () => {
     setResults(results => [{room:'.'}]); 
-    fetch('http://127.0.0.1:3100/search/' + sr)
+    fetch('http://64.23.183.31:3100/search/' + sr)
       .then( (response) => { return response.json(); })
       .then( (data) => { setResults(results => data); });
   };
