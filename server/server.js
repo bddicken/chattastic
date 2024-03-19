@@ -9,7 +9,8 @@ app.set('json spaces', 2)
 
 const port = process.env.PORT || 3100
 
-//const connection = mysql.createConnection(process.env.DATABASE_URL)
+const connection = mysql.createConnection(process.env.DATABASE_URL)
+/*
 const connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USERNAME,
@@ -17,48 +18,12 @@ const connection = mysql.createConnection({
   database: process.env.DATABASE_NAME,
   timezone: 'mst'
 });
+*/
 
 /* Get rooms for search */
 app.get('/search/:term', (req, res) => { 
   const {term} = req.params;
   connection.query('SELECT DISTINCT room FROM message WHERE MATCH(text) AGAINST(?) LIMIT 5', [term], (err, results) => {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//connection.query('SELECT DISTINCT room FROM message WHERE MATCH(text) AGAINST(?) LIMIT 5', [term], (err, results) => {
     res.json(results);
   });
 });
